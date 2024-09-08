@@ -35,16 +35,16 @@ public class UserController {
     }
     */
 
-    @PutMapping("/{username}")
-    public void vote(@PathVariable String username, @RequestBody Vote vote) {
+    @PostMapping("/{username}")
+    public void vote(@PathVariable("username") String username, @RequestBody Vote vote) {
         User existingUser = pollManager.getUsers().get(username);
 
         pollManager.addVote(vote, existingUser);
     }
 
     @GetMapping("/votes")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
+    public Collection<Vote> getVotes() {
+        return pollManager.getVotes().keySet();
     }
     
 }

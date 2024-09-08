@@ -16,4 +16,13 @@ public class Vote {
     public Instant getPublishTime(){
         return publshedAt;
     }
+
+    public void setOption(VoteOption option){
+        this.option = option;
+    }
+
+    public VoteOption getOption(){
+        return option;
+    }
 }
+
