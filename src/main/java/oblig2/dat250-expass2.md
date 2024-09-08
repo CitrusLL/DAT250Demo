@@ -24,7 +24,9 @@ As well i did not seem to find the presentationOrder variable to be an optimal w
 And the deletion of polls is not fully implemented, especially culling the acociated votes. 
 
 ## Task 4
-I wrote some short scripts in bruno to assess the correctness of my code. I assume this is what you wanted from this task
+I wrote some short test scripts in bruno to assess the correctness of my code. I assume this is what you wanted from this task
+
+I did not see anything about how i should submit them as part of the directory.
 
 ## Further tasks
 As mentioned i was particularly strapped for time this week. So i did not tackle the further tasks. 
