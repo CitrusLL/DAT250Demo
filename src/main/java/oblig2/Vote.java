@@ -4,6 +4,7 @@ import java.time.Instant;
 
 public class Vote {
     private Instant publshedAt;
+    private VoteOption option;
 
     public Vote(){
     }

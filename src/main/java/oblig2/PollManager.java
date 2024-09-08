@@ -14,6 +14,7 @@ public class PollManager {
     private Map<String, User> users = new HashMap<>();
     private Map<Poll, User> polls = new HashMap<>();
     private Map<VoteOption, Poll> options = new HashMap<>();
+    private Map<Vote,User> votes = new HashMap<>();
 
     public void addUser(User user){
         users.put(user.getUsername(),user);
@@ -62,4 +63,13 @@ public class PollManager {
 
         return outOptions;
     }
+
+    public void addVote(Vote vote, User user){
+        votes.put(vote, user);
+    }
+
+    public Map<Vote, User> getVotes(){
+        return votes;
+    }
+
 }

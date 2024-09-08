@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/users")
@@ -33,11 +36,15 @@ public class UserController {
     */
 
     @PutMapping("/{username}")
-    public void updateUser(@PathVariable String username, @RequestBody User updatedUser) {
+    public void vote(@PathVariable String username, @RequestBody Vote vote) {
         User existingUser = pollManager.getUsers().get(username);
-        if (existingUser != null) { // Simplified logic: directly update fields
-            existingUser.setUsername(updatedUser.getUsername());
-            existingUser.setEmail(updatedUser.getEmail());
-        }
+
+        pollManager.addVote(vote, existingUser);
     }
+
+    @GetMapping("/votes")
+    public String getMethodName(@RequestParam String param) {
+        return new String();
+    }
+    
 }
