@@ -26,3 +26,5 @@ https://github.com/CitrusLL/DAT250Demo/tree/main/src/main/java/oblig2
 
 ## Issues
 Most of my issues were down to not understanding React and banging my head against a brick wall repeatedly. I also did have issues with some of my HTTP POST request giving me error 415. But i realised i hadn't specified the media type in the header. 
+
+Also i might not show up for the lecture tomorrow due to how much more frustrating this was to implement than i expected
