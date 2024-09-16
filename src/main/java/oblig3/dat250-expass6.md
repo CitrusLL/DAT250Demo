@@ -11,6 +11,7 @@ Building went without issue. The poll posting didn't work afterwards. But i just
 
 ## Weird features
 You can "log in" by typing in the username of a user. The votes & polls sent are thus depenant on who you're logged in as.
+Default user: Home
 
 ## Outstanding issues
 Since the relationship between votes, voteoptions & polls isn't correctly modled. I had issues highlighting the chosen option. 
