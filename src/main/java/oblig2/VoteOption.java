@@ -1,5 +1,6 @@
 package oblig2;
 
+
 public class VoteOption {
     private String caption;
     private int presentationOrder;
@@ -26,5 +27,4 @@ public class VoteOption {
     public int getPresentationOrder(){
         return presentationOrder;
     }
-
 }

@@ -1,13 +1,16 @@
 package oblig2;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/polls")
 public class PollController {
     private final PollManager pollManager;
@@ -16,9 +19,10 @@ public class PollController {
         this.pollManager = pollManager;
     }
 
-    @PostMapping
-    public void addPoll(@RequestBody PollRequest req) {
-        pollManager.addPoll(req);
+    @PostMapping("/{usr}")
+    public void addPoll(@PathVariable(required = true,name="usr") String username, @RequestBody Poll poll) {
+        poll.setUser(pollManager.lookupUser(username));
+        pollManager.addPoll(poll); 
     }
 
     /* 
@@ -29,7 +33,25 @@ public class PollController {
     */
 
     @GetMapping
-    public Collection<PollRequest> getPolls() {
+    public Collection<Poll> getPolls() {
         return pollManager.getPolls();
     }
+
+    /* 
+    @GetMapping("/{usr}")
+    public List<Poll> getPolls(@PathVariable(required = true,name="usr") String username) {
+        
+        List<Poll> pollsOut = new ArrayList<>();
+
+        for (Poll poll : getPolls()) {
+            User usr = poll.getUser();
+            if(usr == pollManager.lookupUser(username)){
+                pollsOut.append(poll);
+            }
+        }
+       
+        return pollsOut;
+    }
+    */
+    
 }

@@ -1,3 +1,4 @@
+/* 
 package oblig2;
 
 import java.util.List;
@@ -24,4 +25,7 @@ public class PollRequest {
     public List<VoteOption> getOptions(){
         return options;
     }
+
+
 }
+*/

@@ -1,7 +1,6 @@
 package oblig2;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -12,64 +11,83 @@ import org.springframework.stereotype.Component;
 @Component
 public class PollManager {
     private Map<String, User> users = new HashMap<>();
-    private Map<Poll, User> polls = new HashMap<>();
-    private Map<VoteOption, Poll> options = new HashMap<>();
-    private Map<Vote,User> votes = new HashMap<>();
+    private Map<Integer,Poll> polls = new HashMap<>();
+    private Integer pollID = 0;
 
-    public void addUser(User user){
-        users.put(user.getUsername(),user);
+    //private Map<VoteOption, Poll> options = new HashMap<>();
+    //private Map<Vote,User> votes = new HashMap<>();
+
+    public PollManager(){
+        //New user
+        User u1 = new User();
+        u1.setUsername("Home");
+        u1.setEmail("home@test.org");
+        addUser(u1);
+
+        //New poll
+        Poll p1 = new Poll();
+        p1.setQuestion("Do you like the cookie?");
+
+        List<VoteOption> vs = new ArrayList<>();
+        VoteOption o1 = new VoteOption();
+        VoteOption o2 = new VoteOption();
+        o1.setCaption("Yes :)");
+        o2.setCaption("No :(");
+        vs.add(o1);
+        vs.add(o2);
+        p1.setOptions(vs);
+
+        addPoll(p1);
     }
 
-    public void addPoll(PollRequest req){
-        User user = req.getAuthor();
-        Poll poll = req.getPoll();
-        users.put(user.getUsername(), user);
-        
-        polls.put(poll, user);
+    public User addUser(User user){
+        //removes anything after a space
+        return users.put(user.getUsername().split(" ",2)[0],user);
+    }
 
-        List<VoteOption> pollOptions = req.getOptions();
+    public User lookupUser(String username){
+        return users.get(username.split(" ",2)[0]);
+    }
 
-        for (VoteOption voteOption : pollOptions) {
-            options.put(voteOption, poll);
+    public void addPoll(Poll poll){
+        polls.put(pollID,poll);
+
+        pollID ++;
+    }
+
+    public Collection<User> getUsers(){
+        return users.values();
+    }
+
+    public Collection<Poll> getPolls(){
+       return polls.values();
+    }
+
+    public void addVote(Vote vote){
+        User user = lookupUser(vote.getUsername());
+
+        user.addVote(vote);
+    }
+
+    public void removeVote(Vote vote){
+        User user = lookupUser(vote.getUsername());
+
+        user.removesVote(vote);
+    }
+
+    public Collection<Vote> getVotes(){
+
+        List<Vote> votes = new ArrayList<>();
+
+        for (User user : getUsers()) {
+            Collection<Vote>  vs = user.getVotes();
+            votes.addAll(vs);
         }
-    }
 
-    public Map<String, User> getUsers(){
-        return users;
-    }
+        System.out.println("Ended loop");
 
-    public Collection<PollRequest> getPolls(){
-        List<PollRequest> out = new ArrayList<>();
-        for (Poll  poll : polls.keySet()) {
-
-            User author = polls.get(poll);
-            List<VoteOption> options = getPollOptions(poll);
-
-            out.add(new PollRequest(author, poll, options));
-            
-        }
-        return out;
-    }
-
-    private List<VoteOption> getPollOptions(Poll poll){
-
-        List<VoteOption> outOptions = new ArrayList<>();
-
-        for (VoteOption option : options.keySet()) {
-            if(options.get(option) == poll){
-                outOptions.add(option);
-            }
-        }
-
-        return outOptions;
-    }
-
-    public void addVote(Vote vote, User user){
-        votes.put(vote, user);
-    }
-
-    public Map<Vote, User> getVotes(){
         return votes;
     }
+
 
 }

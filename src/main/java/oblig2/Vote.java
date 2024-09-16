@@ -5,6 +5,7 @@ import java.time.Instant;
 public class Vote {
     private Instant publshedAt;
     private VoteOption option;
+    private String username;
 
     public Vote(){
     }
@@ -23,6 +24,14 @@ public class Vote {
 
     public VoteOption getOption(){
         return option;
+    }
+
+    public String getUsername(){
+        return username;
+    }
+
+    public void setUsername(String user){
+        this.username = user;
     }
 }
 

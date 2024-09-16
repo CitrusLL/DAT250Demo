@@ -3,12 +3,13 @@ package oblig2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import java.util.List;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/users")
 public class UserController {
 
@@ -25,9 +26,14 @@ public class UserController {
 
     @GetMapping
     public Collection<User> getUsers() {
-        return pollManager.getUsers().values();
+        return pollManager.getUsers();
     }
 
+    @GetMapping("/login/{username}")
+    public User getMethodName(@PathVariable("username") String username) {
+        return pollManager.lookupUser(username);
+    }
+    
     /* 
     @DeleteMapping("/{username}")
     public void deleteUser(@PathVariable String username) {
@@ -35,16 +41,41 @@ public class UserController {
     }
     */
 
-    @PostMapping("/{username}")
+    @PostMapping("/votes/{username}")
     public void vote(@PathVariable("username") String username, @RequestBody Vote vote) {
-        User existingUser = pollManager.getUsers().get(username);
+        User existingUser = pollManager.lookupUser(username);
 
-        pollManager.addVote(vote, existingUser);
+        vote.setUsername(existingUser.getUsername());
+
+        Collection<Poll> polls = pollManager.getPolls();
+
+        for (Vote v : existingUser.getVotes()) {
+            VoteOption v1 = v.getOption();
+            VoteOption v2 = vote.getOption();
+
+            for(Poll p : polls){
+                Collection<VoteOption> vos = p.getOptions();
+                if(vos.contains(v1) && vos.contains(v2)){
+                    pollManager.removeVote(v);
+                    pollManager.addVote(vote);
+                    return;
+                }
+            }
+        }
+
+        pollManager.addVote(vote);
+
+        /*
+        System.out.println("!?!?!?");
+        System.out.println(pollManager.lookupUser(username));
+        System.out.println(vote.getUser());
+        System.out.println(vote.getOption());*/
     }
 
     @GetMapping("/votes")
     public Collection<Vote> getVotes() {
-        return pollManager.getVotes().keySet();
+
+        return pollManager.getVotes();        
     }
     
 }
